@@ -1,6 +1,9 @@
 # coding: utf-8
-require 'sinatra'
-require 'mongoid'
+
+require 'rubygems'
+require 'bundler'
+
+Bundler.require
 
 set :public_folder, File.dirname(__FILE__) + '/static'
 
@@ -21,71 +24,84 @@ class Post
   validate :ok
 
   def ok
-  	errors.add(:nooo, "Text and image are both empty!") if text.empty? && image.nil?
+    errors.add(:nooo, "Text and image are both empty!") if text.empty? && image.nil?
   end
 end
 
 Post.all.empty_posts.delete_all
 
 get '/' do
-	@posts = Post.all
+  @posts = Post.all
 
-	erb :index
+  haml :index
 end
 
 post '/' do
-	@text = params['text']
+  @text = RedCloth.new(params['text']).to_html
 
-	if (failname = params['failname']) && failname[:type] == 'image/jpeg'
-		src = failname[:tempfile].path
-		dst = "#{Time.now.to_i}.jpg"
-		FileUtils.cp(src, "#{settings.public_folder}/#{dst}")
-	end
+  if (failname = params['failname']) && failname[:type] == 'image/jpeg'
+    src = failname[:tempfile].path
+    dst = "#{Time.now.to_i}.jpg"
+    FileUtils.cp(src, "#{settings.public_folder}/#{dst}")
+  end
 
-	@post = Post.create(text: @text, image: dst)
+  @post = Post.create(text: @text, image: dst)
 
-	redirect '/'
+  redirect '/'
+end
+
+get '/post/:num' do |n|
+  post = Post.find(n)
+  haml :post, locals: {post: post}
 end
 
 __END__
 @@ layout
-<html>
-  <head>
-  	<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
-  	<title>Два.ч</title>
-  </head>
+%html
+  %head
+    %link{href: "http://twitter.github.com/bootstrap/assets/css/bootstrap.css", rel: "stylesheet"}
+    %title Недвач совсем
 
-  <body>
-  	<div class="container">
-  		<%= yield %>
-  	</div>
-  </body>
-</html>
+  %body
+    .container
+      .row
+        .span12
+          %h1
+            %a{href: '/'}
+              Недвач
+              %small Всего постов: #{Post.count}
+
+        .span5
+          = erb :form
+        .span7
+          = yield
+          %h8
+            using
+            %a{href: "http://en.wikipedia.org/wiki/Textile_%28markup_language%29"} textile
 
 @@ index
-<h1>Два.ч</h1>
-<%= erb :form %>
-
-<p>Всего постов: <%= @posts.size %></p>
-<% @posts.each do |post| %>
-	<%= erb :post, locals: {post: post} %>
-<% end %>
+- @posts.each do |post|
+  = haml :post, locals: {post: post}
 
 @@ form
 <form action="" method=post enctype="multipart/form-data" class="well form-inline">
-	<input type=file name=failname class="span6"><br/>
-	<textarea name=text></textarea><br/>
-	
-
-	<input type=submit class="btn btn-success">
+  <input type=file accept="image/jpeg" name=failname class="span6"><br/><br/>
+  <textarea name=text class="span4" placeholder="Выразите свои мысли, чувства, вот это все. Еще можно картинку прикрепить!" rows=10></textarea><br/><br/>
+  <input type=submit class="btn btn-success btn-large" value="Сообщить">
 </form>
 
 @@ post
-<div>
-	<p><strong><%= post.created_at %></strong></p>
+%ul.thumbnails
+  %li.span7
+    .thumbnail
+      - if post.image
+        %img{src: "/#{post.image}"}
 
-	<% if post.image %>
-		<img src="/<%= post.image %>">
-	<% end %>
-	<p><%= post.text %></p>
-</div>
+      .caption
+        %h5
+          %a{href: "post/#{post.id}"}= post.created_at
+        - if post.text
+          %p= post.text
+
+  
+  
