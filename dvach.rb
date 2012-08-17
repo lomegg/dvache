@@ -62,6 +62,24 @@ __END__
     %link{href: "http://twitter.github.com/bootstrap/assets/css/bootstrap.css", rel: "stylesheet"}
     %title Недвач совсем
 
+    :css
+      @import url(http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&subset=latin,cyrillic);
+      body, p, h1, h2, h3, h4, h5, h6 {
+        font-family: 'PT Sans Narrow', 'Helvetica Neue', 'Arial', sans-serif;
+      }
+
+      .thumbnail.post img {
+        -ms-transform:rotate(2deg); /* IE 9 */
+        -moz-transform:rotate(2deg); /* Firefox */
+        -webkit-transform:rotate(2deg); /* Safari and Chrome */
+        -o-transform:rotate(2deg); /* Opera */
+        transform:rotate(2deg);
+      }
+      
+      .thumbnail.post img {
+        box-shadow:2px 2px 3px #000;
+      }
+    
   %body
     .container
       .row
@@ -75,7 +93,7 @@ __END__
           = erb :form
         .span7
           = yield
-          %h8
+          %h6
             using
             %a{href: "http://en.wikipedia.org/wiki/Textile_%28markup_language%29"} textile
 
@@ -93,7 +111,7 @@ __END__
 @@ post
 %ul.thumbnails
   %li.span7
-    .thumbnail
+    .thumbnail.post
       - if post.image
         %img{src: "/#{post.image}"}
 
