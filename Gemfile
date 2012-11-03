@@ -7,6 +7,6 @@ if RUBY_PLATFORM != 'java'
   gem 'bson_ext'
 end
 
-gem 'haml'
+gem 'slim'
 gem 'RedCloth'
 gem 'puma'
