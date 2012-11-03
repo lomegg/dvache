@@ -1,7 +1,12 @@
 source "http://rubygems.org"
+
 gem "sinatra"
-gem "mongoid", '=2.4'
-gem 'mongo'
-gem 'bson_ext'
+gem "mongoid"
+
+if RUBY_PLATFORM != 'java'
+  gem 'bson_ext'
+end
+
 gem 'haml'
 gem 'RedCloth'
+gem 'puma'

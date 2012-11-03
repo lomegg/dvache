@@ -7,9 +7,7 @@ Bundler.require
 
 set :public_folder, File.dirname(__FILE__) + '/static'
 
-Mongoid.configure do |config|
-  config.master = Mongo::Connection.new.db("dvach")
-end
+Mongoid.load! './mongoid.yml', :development
 
 class Post
   include Mongoid::Document
