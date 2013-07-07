@@ -7,10 +7,10 @@ Bundler.require
 
 set :public_folder, File.dirname(__FILE__) + '/static'
 
-Mongoid.load! './mongoid.yml', :development
+Mongoid.load! './mongoid.yml', :development          # рубимайн требует уточнить сдк и вообще этого гема нет
 
 class Post
-  include Mongoid::Document
+  include Mongoid::Document                         #что вообще монгоид делает, пойти почитать
   include Mongoid::Timestamps
 
   field :text, type: String
@@ -29,19 +29,19 @@ end
 Post.all.empty_posts.delete_all
 
 get '/' do
-  @posts = Post.all
+  @posts = Post.all                              #т.е. это не рельсы? они же сами должны это уметь
 
   slim :index
 end
 
 post '/' do
-  @text = RedCloth.new(params['text']).to_html
+  @text = RedCloth.new(params['text']).to_html         #RedCloth?
 
   if (failname = params['failname']) && failname[:type] == 'image/jpeg'
     src = failname[:tempfile].path
     dst = "#{Time.now.to_i}.jpg"
     FileUtils.cp(src, "#{settings.public_folder}/#{dst}")
-  end
+  end               #аттачмент
 
   @post = Post.create(text: @text, image: dst)
 
