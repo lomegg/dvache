@@ -1,0 +1,49 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    RedCloth (4.2.9)
+    activemodel (3.2.13)
+      activesupport (= 3.2.13)
+      builder (~> 3.0.0)
+    activesupport (3.2.13)
+      i18n (= 0.6.1)
+      multi_json (~> 1.0)
+    bson (1.9.1)
+    bson_ext (1.9.1)
+      bson (~> 1.9.1)
+    builder (3.0.4)
+    i18n (0.6.1)
+    mongoid (3.1.4)
+      activemodel (~> 3.2)
+      moped (~> 1.4)
+      origin (~> 1.0)
+      tzinfo (~> 0.3.22)
+    moped (1.5.0)
+    multi_json (1.7.7)
+    origin (1.1.0)
+    puma (2.3.2)
+      rack (>= 1.1, < 2.0)
+    rack (1.5.2)
+    rack-protection (1.5.0)
+      rack
+    sinatra (1.4.3)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
+    slim (2.0.0)
+      temple (~> 0.6.5)
+      tilt (~> 1.3, >= 1.3.3)
+    temple (0.6.5)
+    tilt (1.4.1)
+    tzinfo (0.3.37)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  RedCloth
+  bson_ext
+  mongoid
+  puma
+  sinatra
+  slim

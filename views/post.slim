@@ -1,0 +1,11 @@
+ul.thumbnails
+  li.span7
+    .thumbnail.post
+      - if post.image
+        img src="/#{post.image}"
+
+      .caption
+        h5
+          a href="/post/#{post.id}" == post.created_at
+        - if post.text
+          p == post.text
