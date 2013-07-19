@@ -26,10 +26,11 @@ post '/' do
     dst = "#{Time.now.to_i}.jpg"
     FileUtils.cp(src, "#{settings.public_folder}/#{dst}")
   end
-  @chain = Chain.create
-  @post = Post.create(text: @text, image: dst, chain_id:@chain.id)
 
-  redirect '/'
+  @chain_id = params['chain_id'] || Chain.create.id
+  @post = Post.create(text: @text, image: dst, chain_id:@chain_id)
+
+  redirect "/chain/#{@chain_id}##{@post.id}"
 end
 
 get '/chain/:id' do |id|
@@ -37,4 +38,10 @@ get '/chain/:id' do |id|
   slim :chain
 end
   
-  
+helpers do
+  def post_settings
+    if defined? @chain
+      "<input type='hidden' name='chain_id' value='#{@chain.id}'>"
+    end
+  end
+end

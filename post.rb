@@ -8,7 +8,7 @@ class Post
   field :text, type: String
   field :image, type: String
 
-  default_scope desc(:created_at)
+  default_scope asc(:created_at)
 
   validate :ok
 
@@ -26,7 +26,7 @@ class Chain
   default_scope desc(:updated_at)
 
   def first_post
-    posts.first
+    self.posts.first
   end
 
 
