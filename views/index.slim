@@ -1,6 +1,2 @@
-- @posts.each do |post|
-  == slim :post, locals: {post: post}
-
-
-
-
+- @chains.each do |chain|
+  == slim :post, locals: {post: chain.first_post}
