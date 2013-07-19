@@ -13,7 +13,6 @@ Mongoid.load! './mongoid.yml', :development
 require './post.rb'
 
 get '/' do
-  @posts = Post.all
   @chains = Chain.all
   slim :index
 end
@@ -33,9 +32,9 @@ post '/' do
   redirect '/'
 end
 
-get '/post/:num' do |n|
-  post = Post.find(n)
-  slim :post, locals: {post: post}
+get '/chain/:id' do |id|
+  @chain=Chain.find(id)
+  slim :chain
 end
   
   
