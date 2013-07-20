@@ -30,6 +30,8 @@ post '/' do
   @chain_id = params['chain_id'] || Chain.create.id
   @post = Post.create(text: @text, image: dst, chain_id:@chain_id)
 
+  Chain.find(@chain_id).touch
+
   redirect "/chain/#{@chain_id}##{@post.id}"
 end
 
